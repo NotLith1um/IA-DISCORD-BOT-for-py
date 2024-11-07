@@ -1,0 +1,48 @@
+# Import the required libraries
+import discord
+import os
+from discord.ext import commands
+from dotenv import load_dotenv
+import google.generativeai as genai
+
+# use this discord setup template for your bot
+intents = discord.Intents.all()
+intents.message_content = True
+client = discord.Client(intents=intents)
+bot = commands.Bot(command_prefix='!', intents=intents)
+
+# setup the IA
+API_KEY = "YOUR_API_KEY"
+genai.configure(api_key=API_KEY)
+model = genai.GenerativeModel("YOUR_API_MODEL")
+
+# set the startup of your bot
+@bot.event
+async def on_ready():
+    print(f'Logged in as {bot.user.name}')
+
+# set the prompt function of your bot
+@bot.event
+async def generate_response(prompt):
+    response = model.generate_content(prompt)
+    answer = response.text
+    return answer
+
+# setup to your bot answer if mentioned
+@bot.event
+async def on_message(message):
+    if message.author == bot.user:
+        return
+
+    if bot.user in message.mentions:
+        prompt = message.content.replace(f"<@{bot.user.id}>", "").strip()
+        answer = await generate_response(prompt)
+        await message.channel.send(answer)
+
+    await bot.process_commands(message)
+
+# Load the dotenv, you have to create a dotenv file in the venv with your code
+load_dotenv()
+bot.run(os.getenv("discord_token")) # this is the token of your bot, you have to put the token in the dotenv file like that (DISCORD_TOKEN=(token))
+
+<code><img height= "20"src= "https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white"></code>
