@@ -13,7 +13,7 @@
 
 :books: I’m currently learning everything.
 
-:outbox_tray: 2025 Goals: Join university and starting to work in this area as soon as possible.
+:outbox_tray: 2025 Goals: Join university and start to work in this area as soon as possible.
 
  
 
